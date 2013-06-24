@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 using System.Collections.Generic;
-using Json = XCMiniJSON;
+
 
 /* Based on the JSON parser from 
  * http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
@@ -17,7 +17,7 @@ using Json = XCMiniJSON;
 /// JSON uses Arrays and Objects. These correspond here to the datatypes ArrayList and Hashtable.
 /// All numbers are parsed to doubles.
 /// </summary>
-public class XCMiniJSON
+public class MiniJSON
 {
     private const int TOKEN_NONE = 0;
     private const int TOKEN_CURLY_OPEN = 1;
@@ -48,19 +48,19 @@ public class XCMiniJSON
     public static object jsonDecode( string json )
     {
         // save the string for debug information
-        Json.lastDecode = json;
+        MiniJSON.lastDecode = json;
 
         if( json != null )
         {
             char[] charArray = json.ToCharArray();
             int index = 0;
             bool success = true;
-            object value = Json.parseValue( charArray, ref index, ref success );
+            object value = MiniJSON.parseValue( charArray, ref index, ref success );
 
             if( success )
-                Json.lastErrorIndex = -1;
+                MiniJSON.lastErrorIndex = -1;
             else
-                Json.lastErrorIndex = index;
+                MiniJSON.lastErrorIndex = index;
 
             return value;
         }
@@ -79,7 +79,7 @@ public class XCMiniJSON
     public static string jsonEncode( object json )
     {
         var builder = new StringBuilder( BUILDER_CAPACITY );
-        var success = Json.serializeValue( json, builder );
+        var success = MiniJSON.serializeValue( json, builder );
         
         return ( success ? builder.ToString() : null );
     }
@@ -91,7 +91,7 @@ public class XCMiniJSON
     /// <returns></returns>
     public static bool lastDecodeSuccessful()
     {
-        return ( Json.lastErrorIndex == -1 );
+        return ( MiniJSON.lastErrorIndex == -1 );
     }
 
 
@@ -101,7 +101,7 @@ public class XCMiniJSON
     /// <returns></returns>
     public static int getLastErrorIndex()
     {
-        return Json.lastErrorIndex;
+        return MiniJSON.lastErrorIndex;
     }
 
 
@@ -112,21 +112,21 @@ public class XCMiniJSON
     /// <returns></returns>
     public static string getLastErrorSnippet()
     {
-        if( Json.lastErrorIndex == -1 )
+        if( MiniJSON.lastErrorIndex == -1 )
         {
             return "";
         }
         else
         {
-            int startIndex = Json.lastErrorIndex - 5;
-            int endIndex = Json.lastErrorIndex + 15;
+            int startIndex = MiniJSON.lastErrorIndex - 5;
+            int endIndex = MiniJSON.lastErrorIndex + 15;
             if( startIndex < 0 )
                 startIndex = 0;
 
-            if( endIndex >= Json.lastDecode.Length )
-                endIndex = Json.lastDecode.Length - 1;
+            if( endIndex >= MiniJSON.lastDecode.Length )
+                endIndex = MiniJSON.lastDecode.Length - 1;
 
-            return Json.lastDecode.Substring( startIndex, endIndex - startIndex + 1 );
+            return MiniJSON.lastDecode.Substring( startIndex, endIndex - startIndex + 1 );
         }
     }
 
@@ -145,15 +145,15 @@ public class XCMiniJSON
         while( !done )
         {
             token = lookAhead( json, index );
-            if( token == Json.TOKEN_NONE )
+            if( token == MiniJSON.TOKEN_NONE )
             {
                 return null;
             }
-            else if( token == Json.TOKEN_COMMA )
+            else if( token == MiniJSON.TOKEN_COMMA )
             {
                 nextToken( json, ref index );
             }
-            else if( token == Json.TOKEN_CURLY_CLOSE )
+            else if( token == MiniJSON.TOKEN_CURLY_CLOSE )
             {
                 nextToken( json, ref index );
                 return table;
@@ -169,7 +169,7 @@ public class XCMiniJSON
 
                 // :
                 token = nextToken( json, ref index );
-                if( token != XCMiniJSON.TOKEN_COLON )
+                if( token != MiniJSON.TOKEN_COLON )
                     return null;
 
                 // value
@@ -197,15 +197,15 @@ public class XCMiniJSON
         while( !done )
         {
             int token = lookAhead( json, index );
-            if( token == XCMiniJSON.TOKEN_NONE )
+            if( token == MiniJSON.TOKEN_NONE )
             {
                 return null;
             }
-            else if( token == XCMiniJSON.TOKEN_COMMA )
+            else if( token == MiniJSON.TOKEN_COMMA )
             {
                 nextToken( json, ref index );
             }
-            else if( token == XCMiniJSON.TOKEN_SQUARED_CLOSE )
+            else if( token == MiniJSON.TOKEN_SQUARED_CLOSE )
             {
                 nextToken( json, ref index );
                 break;
@@ -229,24 +229,24 @@ public class XCMiniJSON
     {
         switch( lookAhead( json, index ) )
         {
-            case XCMiniJSON.TOKEN_STRING:
+            case MiniJSON.TOKEN_STRING:
                 return parseString( json, ref index );
-            case XCMiniJSON.TOKEN_NUMBER:
+            case MiniJSON.TOKEN_NUMBER:
                 return parseNumber( json, ref index );
-            case XCMiniJSON.TOKEN_CURLY_OPEN:
+            case MiniJSON.TOKEN_CURLY_OPEN:
                 return parseObject( json, ref index );
-            case XCMiniJSON.TOKEN_SQUARED_OPEN:
+            case MiniJSON.TOKEN_SQUARED_OPEN:
                 return parseArray( json, ref index );
-            case XCMiniJSON.TOKEN_TRUE:
+            case MiniJSON.TOKEN_TRUE:
                 nextToken( json, ref index );
                 return Boolean.Parse( "TRUE" );
-            case XCMiniJSON.TOKEN_FALSE:
+            case MiniJSON.TOKEN_FALSE:
                 nextToken( json, ref index );
                 return Boolean.Parse( "FALSE" );
-            case XCMiniJSON.TOKEN_NULL:
+            case MiniJSON.TOKEN_NULL:
                 nextToken( json, ref index );
                 return null;
-            case XCMiniJSON.TOKEN_NONE:
+            case MiniJSON.TOKEN_NONE:
                 break;
         }
 
@@ -405,7 +405,7 @@ s += Char.ConvertFromUtf32((int)codePoint);
 
         if( index == json.Length )
         {
-            return XCMiniJSON.TOKEN_NONE;
+            return MiniJSON.TOKEN_NONE;
         }
         
         char c = json[index];
@@ -413,17 +413,17 @@ s += Char.ConvertFromUtf32((int)codePoint);
         switch( c )
         {
             case '{':
-                return XCMiniJSON.TOKEN_CURLY_OPEN;
+                return MiniJSON.TOKEN_CURLY_OPEN;
             case '}':
-                return XCMiniJSON.TOKEN_CURLY_CLOSE;
+                return MiniJSON.TOKEN_CURLY_CLOSE;
             case '[':
-                return XCMiniJSON.TOKEN_SQUARED_OPEN;
+                return MiniJSON.TOKEN_SQUARED_OPEN;
             case ']':
-                return XCMiniJSON.TOKEN_SQUARED_CLOSE;
+                return MiniJSON.TOKEN_SQUARED_CLOSE;
             case ',':
-                return XCMiniJSON.TOKEN_COMMA;
+                return MiniJSON.TOKEN_COMMA;
             case '"':
-                return XCMiniJSON.TOKEN_STRING;
+                return MiniJSON.TOKEN_STRING;
             case '0':
             case '1':
             case '2':
@@ -435,9 +435,9 @@ s += Char.ConvertFromUtf32((int)codePoint);
             case '8':
             case '9':
             case '-': 
-                return XCMiniJSON.TOKEN_NUMBER;
+                return MiniJSON.TOKEN_NUMBER;
             case ':':
-                return XCMiniJSON.TOKEN_COLON;
+                return MiniJSON.TOKEN_COLON;
         }
         index--;
 
@@ -453,7 +453,7 @@ s += Char.ConvertFromUtf32((int)codePoint);
                 json[index + 4] == 'e' )
             {
                 index += 5;
-                return XCMiniJSON.TOKEN_FALSE;
+                return MiniJSON.TOKEN_FALSE;
             }
         }
 
@@ -466,7 +466,7 @@ s += Char.ConvertFromUtf32((int)codePoint);
                 json[index + 3] == 'e' )
             {
                 index += 4;
-                return XCMiniJSON.TOKEN_TRUE;
+                return MiniJSON.TOKEN_TRUE;
             }
         }
 
@@ -479,11 +479,11 @@ s += Char.ConvertFromUtf32((int)codePoint);
                 json[index + 3] == 'l' )
             {
                 index += 4;
-                return XCMiniJSON.TOKEN_NULL;
+                return MiniJSON.TOKEN_NULL;
             }
         }
 
-        return XCMiniJSON.TOKEN_NONE;
+        return MiniJSON.TOKEN_NONE;
     }
 
     #endregion
@@ -713,25 +713,25 @@ public static class MiniJsonExtensions
 {
     public static string toJson( this Hashtable obj )
     {
-        return XCMiniJSON.jsonEncode( obj );
+        return MiniJSON.jsonEncode( obj );
     }
     
     
     public static string toJson( this Dictionary<string,string> obj )
     {
-        return XCMiniJSON.jsonEncode( obj );
+        return MiniJSON.jsonEncode( obj );
     }
     
     
     public static ArrayList arrayListFromJson( this string json )
     {
-        return XCMiniJSON.jsonDecode( json ) as ArrayList;
+        return MiniJSON.jsonDecode( json ) as ArrayList;
     }
 
 
     public static Hashtable hashtableFromJson( this string json )
     {
-        return XCMiniJSON.jsonDecode( json ) as Hashtable;
+        return MiniJSON.jsonDecode( json ) as Hashtable;
     }
 }
 

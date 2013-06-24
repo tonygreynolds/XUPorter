@@ -4,11 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using UnityEditor.XCodeEditor;
 
 namespace UnityEditor.XCodeEditor
 {
-	
 	public partial class XCProject : System.IDisposable
 	{
 		private PBXDictionary _datastore;
@@ -47,9 +45,6 @@ namespace UnityEditor.XCodeEditor
 		
 		#endregion
 
-		public static void Main()
-		{
-		}
 
 		#region Constructor
 		
@@ -633,6 +628,5 @@ namespace UnityEditor.XCodeEditor
    		{
    		
 	   	}
-		
 	}
 }
