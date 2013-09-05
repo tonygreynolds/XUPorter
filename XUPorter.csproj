@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3D2D4CBD-1909-46DD-8C30-20480D64B888}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>XUPorter</RootNamespace>
+    <AssemblyName>XUPorter</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <StartupObject>XCodePostProcess</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Default</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="UnityEditor">
+      <HintPath>XUPorter\bin\Release\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>XUPorter\bin\Release\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="XCBuildConfiguration.cs" />
+    <Compile Include="XCConfigurationList.cs" />
+    <Compile Include="XCMod.cs" />
+    <Compile Include="XCodePostProcess.cs" />
+    <Compile Include="XCProject.cs" />
+    <Compile Include="PBX Editor\PBXBuildFile.cs" />
+    <Compile Include="PBX Editor\PBXBuildPhase.cs" />
+    <Compile Include="PBX Editor\PBXDictionary.cs" />
+    <Compile Include="PBX Editor\PBXFileReference.cs" />
+    <Compile Include="PBX Editor\PBXGroup.cs" />
+    <Compile Include="PBX Editor\PBXList.cs" />
+    <Compile Include="PBX Editor\PBXObject.cs" />
+    <Compile Include="PBX Editor\PBXParser.cs" />
+    <Compile Include="PBX Editor\PBXProject.cs" />
+    <Compile Include="MiniJSON\MiniJSON.cs" />
+  </ItemGroup>
+</Project>
