@@ -72,6 +72,12 @@ namespace UnityEditor.XCodeEditor
 			}
 		}
 		
+		public ArrayList c_flags {
+			get {
+				return (ArrayList)_datastore["c_flags"];
+			}
+		}
+
 		public XCMod( string filename )
 		{	
 			FileInfo projectFileInfo = new FileInfo( filename );

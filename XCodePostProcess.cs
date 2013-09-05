@@ -6,11 +6,18 @@ using System.IO;
 
 public static class XCodePostProcess
 {
+	public static void Main()
+	{
+		// Not used, but required to build a DLL
+	}
+
 	[PostProcessBuild]
 	public static void OnPostProcessBuild( BuildTarget target, string path )
 	{
+		Debug.LogWarning("Zynga XUPorter OnPostProcessBuild");
+
 		if (target != BuildTarget.iPhone) {
-			Debug.LogWarning("Target is not iPhone. XCodePostProcess will not run");
+			Debug.LogWarning("Zynga XUPorter OnPostProcessBuild > Target is not iPhone. XCodePostProcess will not run");
 			return;
 		}
 
@@ -26,5 +33,7 @@ public static class XCodePostProcess
 
 		// Finally save the xcode project
 		project.Save();
+
+		Debug.LogWarning("Zynga XUPorter OnPostProcessBuild Complete");
 	}
 }

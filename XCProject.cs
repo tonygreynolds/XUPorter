@@ -556,7 +556,12 @@ namespace UnityEditor.XCodeEditor
 			foreach( string flag in mod.linker_flags ) {
 				this.AddOtherLinkerFlags( flag );
 			}
-			
+
+			Debug.Log( "Adding c flags..." );
+			foreach( string flag in mod.linker_flags ) {
+				this.AddOtherCFlags( flag );
+			}
+
 			this.Consolidate();
 		}
 		
