@@ -77,6 +77,12 @@ namespace UnityEditor.XCodeEditor
 				return (ArrayList)_datastore["c_flags"];
 			}
 		}
+		
+		public Hashtable build_settings {
+			get {
+				return (Hashtable)_datastore["build_settings"];
+			}
+		}
 
 		public XCMod( string filename )
 		{	

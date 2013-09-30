@@ -149,5 +149,28 @@ namespace UnityEditor.XCodeEditor
 
 			return modified;
 		}
+		
+		public bool ChangeBuildSettings(string key, string settings)
+		{
+			bool modified = false;
+			
+			// init build settings dict
+			if (!ContainsKey(BUILDSETTINGS_KEY))
+			{
+				this.Add(BUILDSETTINGS_KEY, new PBXDictionary());
+			}
+			// add buildSettings(key, value) if not existed
+			if (buildSettings.ContainsKey(key) && !buildSettings[key].Equals(settings))
+			{
+				buildSettings[key] = settings;
+				modified = true;
+			}
+			else
+			{
+				buildSettings.Add(key, settings);
+				modified = true;
+			}
+			return modified;
+		}
 	}
 }
