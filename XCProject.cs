@@ -462,6 +462,15 @@ namespace UnityEditor.XCodeEditor
 			modified = true;
 			return modified;
 		}
+		
+		public bool ChangeBuildSettings(string key, string settings)
+		{
+			foreach( KeyValuePair<string, XCBuildConfiguration> buildConfig in buildConfigurations ) {
+				buildConfig.Value.ChangeBuildSettings(key, settings);
+			}
+			modified = true;
+			return modified;
+		}
 		#endregion
 
 		#region Getters
@@ -558,8 +567,13 @@ namespace UnityEditor.XCodeEditor
 			}
 
 			Debug.Log( "Adding c flags..." );
-			foreach( string flag in mod.linker_flags ) {
+			foreach( string flag in mod.c_flags ) {
 				this.AddOtherCFlags( flag );
+			}
+			
+			Debug.Log( "Adding build_settings..." );
+			foreach( DictionaryEntry entry in mod.build_settings ) {
+				this.ChangeBuildSettings( (string)entry.Key, (string)entry.Value );
 			}
 
 			this.Consolidate();
