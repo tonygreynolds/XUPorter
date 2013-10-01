@@ -4,5 +4,3 @@
 bin/Default/ICSharpCode.NRefactory.dll
 bin/Default/Mono.Cecil.dll
 bin/Default/nunit.framework.dll
-bin/Default/UnityEditor.dll
-bin/Default/UnityEngine.dll
