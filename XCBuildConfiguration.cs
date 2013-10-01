@@ -160,14 +160,14 @@ namespace UnityEditor.XCodeEditor
 				this.Add(BUILDSETTINGS_KEY, new PBXDictionary());
 			}
 			// add buildSettings(key, value) if not existed
-			if (buildSettings.ContainsKey(key) && !buildSettings[key].Equals(settings))
-			{
-				buildSettings[key] = settings;
-				modified = true;
-			}
-			else
+			if (!buildSettings.ContainsKey(key))
 			{
 				buildSettings.Add(key, settings);
+				modified = true;
+			}
+			else if (!buildSettings[key].Equals(settings))
+			{
+				buildSettings[key] = settings;
 				modified = true;
 			}
 			return modified;

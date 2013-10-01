@@ -11,7 +11,10 @@ namespace UnityEditor.XCodeEditor
 		
 		public string name { get; private set; }
 		public string path { get; private set; }
-		
+
+		static private string C_FLAGS = "c_flags";
+		static private string BUILD_SETTINGS = "build_settings";
+
 		public string group {
 			get {
 				return (string)_datastore["group"];
@@ -74,13 +77,21 @@ namespace UnityEditor.XCodeEditor
 		
 		public ArrayList c_flags {
 			get {
-				return (ArrayList)_datastore["c_flags"];
+				if (_datastore.ContainsKey(C_FLAGS))
+				{
+					return (ArrayList)_datastore[C_FLAGS];
+				}
+				return new ArrayList();
 			}
 		}
 		
 		public Hashtable build_settings {
 			get {
-				return (Hashtable)_datastore["build_settings"];
+				if (_datastore.ContainsKey(BUILD_SETTINGS))
+				{
+					return (Hashtable)_datastore[BUILD_SETTINGS];
+				}
+				return new Hashtable();
 			}
 		}
 
