@@ -1,0 +1,1 @@
+Replace Unity[Editor|Engine].dll with yours located at Unity.app/Contents/Frameworks/Managed/Unity[Editor|Engine].dll
