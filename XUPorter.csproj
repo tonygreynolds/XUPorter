@@ -10,7 +10,6 @@
     <RootNamespace>XUPorter</RootNamespace>
     <AssemblyName>XUPorter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <StartupObject>XCodePostProcess</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
     <Optimize>false</Optimize>

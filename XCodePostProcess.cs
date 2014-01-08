@@ -21,6 +21,9 @@ public static class XCodePostProcess
 			return;
 		}
 
+		// fixup path before handing it off
+		path = Path.GetFullPath((new System.Uri(path)).LocalPath);
+
 		// Create a new project object from build target
 		XCProject project = new XCProject( path );
 
